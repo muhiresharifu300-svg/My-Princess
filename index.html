@@ -1,134 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Page</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Queen's Day</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f8f8f8;
-      color: #222;
+    /* base */
+    :root{
+      --blue:#1c4fd3;
+      --bg:#f4f4ff;
+    }
+    body{
+      margin:0;
+      font-family:"Poppins",sans-serif;
+      background:var(--bg);
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      text-align:center;
     }
 
-    /* NAVIGATION */
-    nav {
-      background: #111;
-      color: white;
-      padding: 15px;
-      display: flex;
-      gap: 20px;
-      font-size: 18px;
+    /* NAV */
+    nav{
+      background:var(--blue);
+      padding:15px;
+      display:flex;
+      justify-content:center;
+      gap:25px;
+      position:sticky;
+      top:0;
+      z-index:50;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
     }
-    nav a {
-      color: white;
-      text-decoration: none;
-      cursor: pointer;
+    nav a{
+      color:#fff;
+      text-decoration:none;
+      font-size:16px;
+      font-weight:500;
+      cursor:pointer;
+      padding:6px 10px;
+      border-radius:6px;
+    }
+    nav a:hover{ opacity:0.85; background: rgba(255,255,255,0.06); }
+
+    header{
+      padding:26px 20px;
+      background:linear-gradient(135deg,var(--blue),#5d95ff);
+      color:white;
+    }
+    .subtitle{ margin-top:-8px; font-size:14px; opacity:.95; }
+
+    /* GALLERY - centered large card row like your screenshot */
+    .gallery-outer {
+      /* a centered max-width stage so the cards sit centered with large side margins */
+      max-width:1300px;           /* controls how wide the center area is */
+      margin: 30px auto 10px auto;
+      padding: 20px 40px;         /* side padding so there's breathing room */
+      box-sizing: border-box;
     }
 
-    /* TABS */
-    .tab-content {
-      display: none;
-      padding: 20px;
-    }
-    .active {
-      display: block;
-    }
-
-    /* GALLERY */
     .gallery {
-      display: flex;
-      overflow-x: auto;
-      gap: 15px;
-      padding: 10px 0;
-    }
-    .gallery img {
-      height: 250px;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
-    /* NOV18 IMAGE */
-    .nov-img {
-      width: 100%;
-      max-width: 400px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      display:flex;
+      flex-direction:row;
+      justify-content:center;     /* center the row in the stage */
+      gap:40px;                   /* large gaps like screenshot */
+      align-items:flex-start;
+      /* allow horizontal scroll on narrow screens but normally will be centered */
+      overflow-x:auto;
+      padding-bottom:6px;
+      -webkit-overflow-scrolling:touch;
     }
 
-    /* FOOTER */
-    footer {
-      background: #111;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      margin-top: 40px;
-      font-size: 14px;
+    /* hide default scrollbar on some browsers while still allowing scroll */
+    .gallery::-webkit-scrollbar { height:10px; }
+    .gallery::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius:10px; }
+
+    .image-box {
+      flex: 0 0 auto;            /* keep fixed card size */
+      width: 360px;              /* card width */
+      height: 540px;             /* card height - tall like screenshot */
+      border-radius: 16px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow:
+        0 18px 30px rgba(27,45,89,0.08),
+        0 6px 14px rgba(27,45,89,0.06);
+      transition: transform .28s ease, box-shadow .28s ease;
+      display:block;
+    }
+
+    .image-box:hover{
+      transform:translateY(-8px) scale(1.02);
+      box-shadow:
+        0 32px 60px rgba(27,45,89,0.12),
+        0 10px 24px rgba(27,45,89,0.08);
+    }
+
+    .image-box img{
+      width:100%;
+      height:100%;
+      object-fit:cover;          /* crop to fill, keeps uniform look */
+      display:block;
+    }
+
+    /* other content cards (inspiration/about/nov18) stay narrow and centered */
+    .card {
+      background:white;
+      margin:36px auto;
+      border-radius:12px;
+      padding:26px;
+      width:85%;
+      max-width:820px;
+      box-shadow:0 8px 22px rgba(0,0,0,0.06);
+      text-align:left;
+    }
+
+    .card h2 { color:var(--blue); margin-top:0; }
+	.card h3 { color:var(--green); margin-top:0; }
+    .card ul { padding-left:18px; margin:10px 0; }
+    .card li { margin:8px 0; }
+
+    /* sections for tab system */
+    .section { display:none; }
+    .active { display:block; }
+
+    footer{
+      margin-top:40px;
+      padding:18px;
+      background:#e2e8ff;
+      font-size:14px;
+      color:#444;
+    }
+
+    /* responsiveness: keep the three cards but scale down on small screens */
+    @media (max-width:1100px){
+      .image-box { width:300px; height:480px; }
+      .gallery-outer { max-width:980px; padding:20px; }
+      .gallery { gap:30px; }
+    }
+    @media (max-width:760px){
+      /* phones: allow horizontal scroll and show cards narrower */
+      .image-box { width:260px; height:420px; border-radius:14px; }
+      .gallery-outer { padding:12px; max-width:100%; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAVIGATION -->
+  <!-- NAV -->
   <nav>
-    <a onclick="showTab('galleryTab')">Gallery</a>
-    <a onclick="showTab('notesTab')">Notes</a>
-    <a onclick="showTab('novTab')">Nov18</a>
+    <a onclick="showSection('gallery')">Gallery</a>
+    <a onclick="showSection('inspiration')">Inspiration</a>
+    <a onclick="showSection('about')">Who She Really Is</a>
+    <a onclick="showSection('nov18')">Nov18</a>
   </nav>
 
-  <!-- GALLERY TAB -->
-  <div id="galleryTab" class="tab-content active">
-    <h2>Gallery</h2>
-    <div class="gallery">
-      <img src="IMG-20251117-WA0036.jpg" />
-      <img src="IMG-20251117-WA0037.jpg" />
-      <img src="IMG-20251117-WA0039.jpg" />
-      <img src="princess-day.jpg" />
+  <header>
+    <h1>Forever My Princess💙</h1>
+    <p class="subtitle">Achieve More💪  Reach Higher🌠 Shine Brighter💎</p>
+  </header>
+
+  <!-- GALLERY (default visible) -->
+  <div id="gallery" class="section active">
+    <div class="gallery-outer">
+      <div class="gallery" aria-label="photo gallery">
+        <a class="image-box" href="#" onclick="return false;">
+          <img src="IMG-20251117-WA0036.jpg" alt="Queen Image 1">
+        </a>
+
+        <a class="image-box" href="#" onclick="return false;">
+          <img src="IMG-20251117-WA0037.jpg" alt="Queen Image 2">
+        </a>
+
+        <a class="image-box" href="#" onclick="return false;">
+          <img src="IMG-20251117-WA0039.jpg" alt="Queen Image 3">
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- NOTES TAB -->
-  <div id="notesTab" class="tab-content">
-    <h2>Inspiration</h2>
-    <p>Your full restored inspiration text is here.</p>
+  <!-- Inspiration -->
+  <section id="inspiration" class="section">
+    <div class="card">
+      <h2><b>Because Your Love Changes Everything 🌹</b></h2>
+      <ul>
+     You are a light everywhere you go. Your beauty is matched only by your strength. Never stop dreaming the world is yours.I believe in you today, tomorrow, and always.Keep rising. Keep glowing. Keep being you.
+      </ul>
+	  <h2><b>You Are Extraordinary💫</b></h2>
+	  <ul>
+	  Never forget how truly incredible you are. You have a strength within you that inspires everyone around you, including me. The way you face challenges with grace, the kindness you show to others, and the light you bring into every room these are gifts that make you remarkable. Don't ever let anyone, including yourself, make you feel less than the amazing woman you are. You're capable of achieving anything you set your heart on, and I believe in you completely. Keep shining, because the world needs your light.
+	  </ul>
+	  <h2><b>Your Dreams Matter💝</b></h2>
+	  <ul>
+	  I want you to know that your dreams are valid, your goals are achievable, and your voice deserves to be heard. Don't let fear or doubt hold you back from becoming everything you're meant to be. You have potential that are waiting to bloom. Take that leap, trust yourself, and know that I'm here cheering you on every step of the way. You're not just my love, you're a force of nature, and I can't wait to see all the incredible things you'll accomplish. Believe in yourself as much as I believe in you.
+	  </ul>
+    </div>
+  </section>
 
-    <h2>Who She Really Is</h2>
-    <p>All restored text you wrote is included here.</p>
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="card">
+      <h2>Who She Really Is to Me 💙</h2>
+      <p>She is my safe place, my peace, and the gentle calm in my storms. When I look at her, I see someone incredibly strong, beautiful, and full of purpose.</p>
+      <p>I love her more than words can explain not just for how she looks, but for who she is: her kindness, her intelligence, her resilience, and the way she carries herself with grace.</p>
+      <p>She is my queen. My heart claimed her first, and my mind stands beside it, knowing she is the one meant for me.</p>
+	<i>
+	<p><b>My love ❤️</b></p>
+	  <ul>
+	   Have you ever felt like no one else could truly understand you, but then you found that one person who just gets you?
+That's how I feel about you.
+       
+	   I'd give up forever just to hold you close because in those moments, it feels like I've found heaven on earth. Your presence is my sanctuary, and every second with you is a treasure.
+	   I don't need the world to see me; I only need you to know the real me. When everything else feels broken, you are my constant, my strength. In a world that often feels like it's falling apart, your love is the glue that holds me together.
+	   So, here's my heart laid bare for you. You are my my reason to believe in love. I just want you to know who I am, because loving you has made me who I am.
+	  
+	  <p><b>Why I Love You</b></p>
+	  <ul>
+	  I love you for so many reasons
+Big and small
+And all of them are wonderful.
+	  </ul>
+	  <ul>
+	  I love you for all the special qualities
+That make you one of a kind...
+The only one in the world for me.
+	  </ul>
+	  <ul>
+	  I love you for the things you do
+That bring such special meaning to my life
+I love you for the silent times
+When your eyes and arms tell me all I want to know.
+	  </ul>
+	  <ul>
+	  I love you
+Just because I do
+	  </ul>
+	  <ul>
+	  Because now
+In the deepest part of my heart...
+A place where there was nothing before
+There is love.
+	  </ul>
+	
+	<p><b>You Are My Safe Haven</b></p>
+	  <ul>
+	  In your arms, I've found a peace I never knew existed. You make the chaos of the world fade away, and suddenly everything makes sense. Your love doesn't just complete me it elevates me, inspires me, and reminds me every day what it means to truly be alive. Thank you for being my home, my comfort, and my greatest adventure all at once.
+	  </ul>
+	<p> <b>Growing Together</b> </p>
+	  <ul>
+	  Every day with you is a new page in our beautiful story. I cherish how we grow together, how we lift each other up, and how we turn ordinary moments into extraordinary memories. You challenge me to be better, support me when I stumble, and celebrate every victory by my side. I'm so grateful that I get to walk through this life with you.
+	  </ul>
+	  </i>
+    </div>
+  </section>
+
+  <!-- Nov18 -->
+  <section id="nov18" class="section">
+    <div class="card">
+  <h2>Princess Day 👑</h2>
+
+  <!-- Picture -->
+  <div style="width:100%; display:flex; justify-content:center; margin-bottom:20px;">
+      <img src="princess-day.jpg" 
+           alt="Princess Day Photo" 
+           style="width:350px; border-radius:16px; box-shadow:0 8px 22px rgba(0,0,0,0.15);">
   </div>
 
-  <!-- NOV18 TAB -->
-  <div id="novTab" class="tab-content">
-    <h2>Princess Day Message</h2>
+  <!-- Message -->
+  <p style="font-size:17px; line-height:1.6;">
+    <h2><strong>Happy Princess Day, My Love!💖</strong><br><br></h2>
 
-    <!-- IMPORTANT: Replace princess-day.jpg with your real filename -->
-    <img src="princess-day.jpg" class="nov-img" />
+   
+	<p>I'm not good at history, but I did some research because this day means something special. 
+	Princess Day comes from the movie <em>"The Swan Princess"</em> from 1994, and while it's just a movie, it speaks the truth, that every love story is unique, and ours is everything to me.</p>
 
-    <p>
-      Happy Princess Day, My Love! 👑💖<br /><br />
-      I'm not good at history, but I did my research and discovered something beautiful.
-      I know Princess Day comes from the movie "The Swan Princess," but the reason this day matters is because that movie spoke the truth.<br /><br />
-      Every person has their own story in their relationship, and ours is special.
-      That 1994 movie touched my heart deeply, but more than that, it showed me what you truly are to me—
-      a treasure who deserves to be treated even better than a princess. ✨<br /><br />
-      You are my princess 👸 and I love you so much 💕<br />
-      Enjoy your day, my love 🌹<br /><br />
-      I'm sorry I'm not with you today to celebrate you the way you deserve.
-      I promise I owe you a special date, inshallah, my princess. 🥰💫<br /><br />
-      Forever yours ❤️
-    </p>
-  </div>
+    <p>Every person has their own story in their relationship, and ours is special.  
+    That movie touched my heart deeply, but more than that, it showed me what you truly are to me  
+    <strong>priceless treasure who deserves to be honored and loved beyond what any princess could imagine.</strong> ✨<br><br></p>
 
-  <!-- FOOTER -->
+    <strong>You are my princess 👸  
+    And I love you so much 💕</strong><br><br>
+
+    Enjoy your day, my beautiful one🌹  
+    <p>I'm sorry I'm not with you today to celebrate you the way you deserve.  
+    I promise I owe you a special date, inshallah, my princess. 🥰💫<br><br></P>
+
+    <strong>Forever yours ❤️</strong>
+  </p>
+</div>
+  </section>
+
   <footer>
-    Made with ❤️ for my princess
+    <p>Made with ❤️ for My Princess</p>
+    <p>Nov18</p>
+    <p>Forever My Love 🌸</p>
   </footer>
 
   <script>
-    function showTab(id) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+    /* simple tab system (no libraries) */
+    function showSection(id){
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      const el = document.getElementById(id);
+      if(el) el.classList.add('active');
+      // scroll to top of page so the header/nav is visible after switching
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    // ensure initial visible state
+    document.addEventListener('DOMContentLoaded', function(){
+      showSection('gallery');
+    });
   </script>
 </body>
 </html>
