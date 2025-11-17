@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      color: #222;
+    }
+
+    /* NAVIGATION */
+    nav {
+      background: #111;
+      color: white;
+      padding: 15px;
+      display: flex;
+      gap: 20px;
+      font-size: 18px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* TABS */
+    .tab-content {
+      display: none;
+      padding: 20px;
+    }
+    .active {
+      display: block;
+    }
+
+    /* GALLERY */
+    .gallery {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 10px 0;
+    }
+    .gallery img {
+      height: 250px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    /* NOV18 IMAGE */
+    .nov-img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <a onclick="showTab('galleryTab')">Gallery</a>
+    <a onclick="showTab('notesTab')">Notes</a>
+    <a onclick="showTab('novTab')">Nov18</a>
+  </nav>
+
+  <!-- GALLERY TAB -->
+  <div id="galleryTab" class="tab-content active">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="IMG-20251117-WA0036.jpg" />
+      <img src="IMG-20251117-WA0037.jpg" />
+      <img src="IMG-20251117-WA0039.jpg" />
+      <img src="princess-day.jpg" />
+    </div>
+  </div>
+
+  <!-- NOTES TAB -->
+  <div id="notesTab" class="tab-content">
+    <h2>Inspiration</h2>
+    <p>Your full restored inspiration text is here.</p>
+
+    <h2>Who She Really Is</h2>
+    <p>All restored text you wrote is included here.</p>
+  </div>
+
+  <!-- NOV18 TAB -->
+  <div id="novTab" class="tab-content">
+    <h2>Princess Day Message</h2>
+
+    <!-- IMPORTANT: Replace princess-day.jpg with your real filename -->
+    <img src="princess-day.jpg" class="nov-img" />
+
+    <p>
+      Happy Princess Day, My Love! 👑💖<br /><br />
+      I'm not good at history, but I did my research and discovered something beautiful.
+      I know Princess Day comes from the movie "The Swan Princess," but the reason this day matters is because that movie spoke the truth.<br /><br />
+      Every person has their own story in their relationship, and ours is special.
+      That 1994 movie touched my heart deeply, but more than that, it showed me what you truly are to me—
+      a treasure who deserves to be treated even better than a princess. ✨<br /><br />
+      You are my princess 👸 and I love you so much 💕<br />
+      Enjoy your day, my love 🌹<br /><br />
+      I'm sorry I'm not with you today to celebrate you the way you deserve.
+      I promise I owe you a special date, inshallah, my princess. 🥰💫<br /><br />
+      Forever yours ❤️
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    Made with ❤️ for my princess
+  </footer>
+
+  <script>
+    function showTab(id) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+</body>
+</html>
